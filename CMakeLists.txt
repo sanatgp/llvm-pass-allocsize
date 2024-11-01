@@ -1,22 +1,18 @@
 cmake_minimum_required(VERSION 3.6)
-project(Skeleton)
+project(alloc_size_pass)
 
 # LLVM uses C++17.
 set(CMAKE_CXX_STANDARD 17)
 
-# Load LLVMConfig.cmake. If this fails, consider setting `LLVM_DIR` to point
-# to your LLVM installation's `lib/cmake/llvm` directory.
+# Find the LLVM package.
 find_package(LLVM REQUIRED CONFIG)
 
-# Include the part of LLVM's CMake libraries that defines
-# `add_llvm_pass_plugin`.
+# Include the necessary LLVM libraries.
 include(AddLLVM)
 
-# Use LLVM's preprocessor definitions, include directories, and library search
-# paths.
+# Link LLVM definitions.
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 
-# Our pass lives in this subdirectory.
-add_subdirectory(skeleton)
+add_llvm_pass_plugin(alloc_size_pass allocpass/Allocpass.cpp)
